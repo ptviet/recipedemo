@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Optional;
 
 @Controller
 public class IndexController {
@@ -16,7 +15,7 @@ public class IndexController {
         this.recipeService = recipeService;
     }
 
-    @RequestMapping({"","/","/index","/home"})
+    @RequestMapping({"", "/", "/index", "/home"})
     public String getIndexPage(Model model) {
 
         model.addAttribute("recipes", recipeService.getRecipes());
