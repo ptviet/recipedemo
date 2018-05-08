@@ -1,4 +1,4 @@
-package com.stevenp.recipedemo.entity;
+package com.stevenp.recipedemo.domain;
 
 public enum Difficulty {
 

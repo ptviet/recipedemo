@@ -1,6 +1,6 @@
 package com.stevenp.recipedemo.repositories;
 
-import com.stevenp.recipedemo.entity.Category;
+import com.stevenp.recipedemo.domain.Category;
 import org.springframework.data.repository.CrudRepository;
 import java.util.Optional;
 

@@ -1,9 +1,10 @@
-package com.stevenp.recipedemo.entity;
+package com.stevenp.recipedemo.domain;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
-public class UnitOfMeasure {
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -11,11 +12,10 @@ public class UnitOfMeasure {
 
     private String description;
 
-    public UnitOfMeasure() {
-    }
+    @ManyToMany(mappedBy = "categories")
+    private Set<Recipe> recipes;
 
-    public UnitOfMeasure(String description) {
-        this.description = description;
+    public Category() {
     }
 
     public Long getId() {
@@ -34,4 +34,11 @@ public class UnitOfMeasure {
         this.description = description;
     }
 
+    public Set<Recipe> getRecipes() {
+        return recipes;
+    }
+
+    public void setRecipes(Set<Recipe> recipes) {
+        this.recipes = recipes;
+    }
 }

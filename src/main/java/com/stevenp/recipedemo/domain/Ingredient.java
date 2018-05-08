@@ -1,4 +1,4 @@
-package com.stevenp.recipedemo.entity;
+package com.stevenp.recipedemo.domain;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -20,6 +20,12 @@ public class Ingredient {
     private Recipe recipe;
 
     public Ingredient() {
+    }
+
+    public Ingredient(String description, BigDecimal amount, UnitOfMeasure uom) {
+        this.description = description;
+        this.amount = amount;
+        this.uom = uom;
     }
 
     public Ingredient(String description, BigDecimal amount, UnitOfMeasure uom, Recipe recipe) {

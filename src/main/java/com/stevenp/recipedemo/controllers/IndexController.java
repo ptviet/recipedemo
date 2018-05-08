@@ -1,11 +1,8 @@
 package com.stevenp.recipedemo.controllers;
 
-import com.stevenp.recipedemo.entity.Category;
-import com.stevenp.recipedemo.entity.UnitOfMeasure;
-import com.stevenp.recipedemo.repositories.CategoryRepository;
-import com.stevenp.recipedemo.repositories.UnitOfMeasureRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.stevenp.recipedemo.services.RecipeService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Optional;
@@ -13,23 +10,16 @@ import java.util.Optional;
 @Controller
 public class IndexController {
 
-    private CategoryRepository categoryRepository;
-    private UnitOfMeasureRepository unitOfMeasureRepository;
+    private final RecipeService recipeService;
 
-    public IndexController(CategoryRepository categoryRepository, UnitOfMeasureRepository unitOfMeasureRepository) {
-        this.categoryRepository = categoryRepository;
-        this.unitOfMeasureRepository = unitOfMeasureRepository;
+    public IndexController(RecipeService recipeService) {
+        this.recipeService = recipeService;
     }
 
     @RequestMapping({"","/","/index","/home"})
-    public String getIndexPage() {
+    public String getIndexPage(Model model) {
 
-//        Optional<Category> categoryOptional = categoryRepository.findByDescription("American");
-//        Optional<UnitOfMeasure> unitOfMeasureOptional = unitOfMeasureRepository.findByDescription("Teaspoon");
-//
-//        System.out.println("Cat Id: " + categoryOptional.get().getId());
-//        System.out.println("UoM Id: " + unitOfMeasureOptional.get().getId());
-
+        model.addAttribute("recipes", recipeService.getRecipes());
         return "index";
     }
 
