@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Recipe Home</title>
+    <title>Ingredient</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
           integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
@@ -18,38 +18,31 @@
             integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
             crossorigin="anonymous"
             th:src="@{/webjars/bootstrap/4.1.0/js/bootstrap.min.js}"></script>
-
 </head>
 <body>
-
 <div class="container-fluid" style="margin-top: 20px">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <div class="card">
+
                 <div class="card-header bg-success">
-                    <h1 class="card-title">My Recipes</h1>
-                    <a class="btn btn-success" href="#" th:href="@{'/recipe/new'}">Add New</a>
+                    <h1 class="card-title">Ingredient</h1>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive" th:if="${not #lists.isEmpty(recipes)}">
-                        <table class="table table-striped">
+
+                    <div class="table-responsive">
+                        <table class="table table-striped ">
                             <thead>
                             <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Description</th>
-                                <th scope="col"></th>
+                                <th>ID</th>
+                                <th>Description</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr th:each="recipe : ${recipes}">
-                                <th th:text="${recipe.id}" scope="row"></th>
-                                <td th:text="${recipe.description}"></td>
-                                <td><a class="btn btn-success" href="#" th:href="@{'/recipe/' + ${recipe.id}}">View</a>
-                                    <a class="btn btn-info" href="#" th:href="@{'/recipe/' + ${recipe.id} +'/edit'}">Edit</a>
-                                    <a class="btn btn-danger" href="#" th:href="@{'/recipe/' + ${recipe.id}} + '/delete'">Delete</a>
-                                </td>
+                            <tr>
+                                <th th:text="${ingredient.id}" scope="row"></th>
+                                <td th:text="${(ingredient.description + ' - '
+                                    + '(' + ingredient.amount + ' ' + ingredient.unitOfMeasure.description + ')' )}"></td>
                             </tr>
-                            </tbody>
                         </table>
                     </div>
                 </div>

@@ -1,5 +1,8 @@
 package com.stevenp.recipedemo.services;
 
+
+import com.stevenp.recipedemo.converters.RecipeCommandToRecipe;
+import com.stevenp.recipedemo.converters.RecipeToRecipeCommand;
 import com.stevenp.recipedemo.domain.Recipe;
 import com.stevenp.recipedemo.repositories.RecipeRepository;
 import org.junit.Before;
@@ -15,9 +18,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
 
-/**
- * Created by jt on 6/17/17.
- */
 public class RecipeServiceImplTest {
 
     RecipeServiceImpl recipeService;
@@ -25,12 +25,17 @@ public class RecipeServiceImplTest {
     @Mock
     RecipeRepository recipeRepository;
 
+    @Mock
+    RecipeToRecipeCommand recipeToRecipeCommand;
+
+    @Mock
+    RecipeCommandToRecipe recipeCommandToRecipe;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        recipeService = new RecipeServiceImpl(recipeRepository);
+        recipeService = new RecipeServiceImpl(recipeRepository, recipeCommandToRecipe, recipeToRecipeCommand);
     }
 
     @Test
@@ -63,5 +68,16 @@ public class RecipeServiceImplTest {
         verify(recipeRepository, times(1)).findAll();
         verify(recipeRepository, never()).findById(anyLong());
     }
+
+    @Test
+    public void testDeleteById() throws Exception {
+        Long idToDelete = Long.valueOf(2L);
+
+        recipeService.deleteById(idToDelete);
+
+        verify(recipeRepository, times(1)).deleteById(anyLong());
+
+    }
+
 
 }
