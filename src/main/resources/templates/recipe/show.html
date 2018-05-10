@@ -77,7 +77,7 @@
                                 <h5>URL:</h5>
                             </div>
                             <div class="col-md-3">
-                                <a th:href="${recipe.url}">Click here</a>
+                                <a th:href="${recipe.url}"></a>
                             </div>
                         </div>
                     </div>
@@ -98,7 +98,7 @@
                             <div class="col-md-12">
                                 <ul th:each="ing : ${recipe.ingredients}">
                                     <li th:text="${(ing.description + ' - '
-                                    + '(' + ing.amount + ' ' + ing.uom.description + ')' )}"></li>
+                                    + '(' + ing.amount + ' ' + ing.unitOfMeasure.description + ')' )}"></li>
                                 </ul>
                             </div>
                         </div>

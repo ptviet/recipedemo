@@ -1,7 +1,7 @@
 package com.stevenp.recipedemo.services;
 
-import com.stevenp.recipedemo.commands.IngredientCommand;
+import com.stevenp.recipedemo.domain.Ingredient;
 
 public interface IngredientService {
-    IngredientCommand findByRecipeIdAndIngredientId(Long recipeId, Long ingredientId);
+    Ingredient findByRecipeIdAndIngredientId(Long recipeId, Long ingredientId);
 }

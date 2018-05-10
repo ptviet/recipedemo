@@ -90,7 +90,7 @@
                         <div class="col-md-12">
                             <ul th:each="ing : *{ingredients}">
                                 <li th:text="${(ing.description + ' - '
-                                    + '(' + ing.amount + ' ' + ing.uom.description + ')' )}"></li>
+                                    + '(' + ing.amount + ' ' + ing.unitOfMeasure.description + ')' )}"></li>
                             </ul>
                         </div>
                     </div>
@@ -123,6 +123,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-12 form-group">
+                            <input type="hidden" th:field="*{notes.id}"/>
                             <textarea class="form-control" rows="3" th:field="*{notes.recipeNotes}"></textarea>
                         </div>
                     </div>

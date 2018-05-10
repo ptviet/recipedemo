@@ -19,8 +19,6 @@ import static org.mockito.Mockito.*;
 
 public class IngredientServiceImplTest {
 
-    private final IngredientToIngredientCommand ingredientToIngredientCommand;
-
     @Mock
     RecipeRepository recipeRepository;
 
@@ -28,14 +26,14 @@ public class IngredientServiceImplTest {
 
     //init converters
     public IngredientServiceImplTest() {
-        this.ingredientToIngredientCommand = new IngredientToIngredientCommand(new UnitOfMeasureToUnitOfMeasureCommand());
+
     }
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        ingredientService = new IngredientServiceImpl(ingredientToIngredientCommand, recipeRepository);
+        ingredientService = new IngredientServiceImpl(recipeRepository);
     }
 
     @Test
@@ -65,11 +63,11 @@ public class IngredientServiceImplTest {
         when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
 
         //then
-        IngredientCommand ingredientCommand = ingredientService.findByRecipeIdAndIngredientId(1L, 3L);
+        Ingredient ingredient = ingredientService.findByRecipeIdAndIngredientId(1L, 3L);
 
         //when
-        assertEquals(Long.valueOf(3L), ingredientCommand.getId());
-        assertEquals(Long.valueOf(1L), ingredientCommand.getRecipeId());
+        assertEquals(Long.valueOf(3L), ingredient.getId());
+        assertEquals(Long.valueOf(1L), ingredient.getRecipe().getId());
         verify(recipeRepository, times(1)).findById(anyLong());
     }
 

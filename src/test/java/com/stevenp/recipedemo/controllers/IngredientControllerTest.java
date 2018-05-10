@@ -1,7 +1,7 @@
 package com.stevenp.recipedemo.controllers;
 
-import com.stevenp.recipedemo.commands.IngredientCommand;
-import com.stevenp.recipedemo.commands.RecipeCommand;
+import com.stevenp.recipedemo.domain.Ingredient;
+import com.stevenp.recipedemo.domain.Recipe;
 import com.stevenp.recipedemo.services.IngredientService;
 import com.stevenp.recipedemo.services.RecipeService;
 import org.junit.Before;
@@ -44,8 +44,8 @@ public class IngredientControllerTest {
     @Test
     public void testListIngredients() throws Exception {
         //given
-        RecipeCommand recipeCommand = new RecipeCommand();
-        when(recipeService.findCommandById(anyLong())).thenReturn(recipeCommand);
+        Recipe recipe = new Recipe();
+        when(recipeService.findById(anyLong())).thenReturn(recipe);
 
         //when
         mockMvc.perform(get("/recipe/1/ingredient"))
@@ -54,17 +54,17 @@ public class IngredientControllerTest {
                .andExpect(model().attributeExists("recipe"));
 
         //then
-        verify(recipeService, times(1)).findCommandById(anyLong());
+        verify(recipeService, times(1)).findById(anyLong());
 
     }
 
     @Test
     public void testShowIngredient() throws Exception {
         //given
-        IngredientCommand ingredientCommand = new IngredientCommand();
+        Ingredient ingredient = new Ingredient();
 
         //when
-        when(ingredientService.findByRecipeIdAndIngredientId(anyLong(), anyLong())).thenReturn(ingredientCommand);
+        when(ingredientService.findByRecipeIdAndIngredientId(anyLong(), anyLong())).thenReturn(ingredient);
 
         //then
         mockMvc.perform(get("/recipe/1/ingredient/2"))

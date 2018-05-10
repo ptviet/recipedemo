@@ -1,6 +1,7 @@
 package com.stevenp.recipedemo.controllers;
 
 
+import com.stevenp.recipedemo.domain.Recipe;
 import com.stevenp.recipedemo.services.IngredientService;
 import com.stevenp.recipedemo.services.RecipeService;
 import lombok.extern.slf4j.Slf4j;
@@ -27,8 +28,12 @@ public class IngredientController {
     public String listIngredients(@PathVariable String recipeId, Model model) {
         log.debug("Getting ingredients for recipe id: " + recipeId);
 
+        Recipe recipe = recipeService.findById(Long.valueOf(recipeId));
+
         // use command object to avoid lazy load errors in Thymeleaf
-        model.addAttribute("recipe", recipeService.findCommandById(Long.valueOf(recipeId)));
+        model.addAttribute("recipe", recipe);
+
+        log.debug("Recipe returned: " + recipe.getDescription());
 
         return "recipe/ingredient/list";
     }

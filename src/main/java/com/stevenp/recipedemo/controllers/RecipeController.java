@@ -1,6 +1,6 @@
 package com.stevenp.recipedemo.controllers;
 
-import com.stevenp.recipedemo.commands.RecipeCommand;
+import com.stevenp.recipedemo.domain.Recipe;
 import com.stevenp.recipedemo.services.RecipeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +28,7 @@ public class RecipeController {
     @GetMapping
     @RequestMapping("recipe/new")
     public String newRecipe(Model model) {
-        model.addAttribute("recipe", new RecipeCommand());
+        model.addAttribute("recipe", new Recipe());
         return "recipe/recipeForm";
 
     }
@@ -41,13 +41,22 @@ public class RecipeController {
 
     }
 
+//    @PostMapping
+//    @RequestMapping("recipe")
+//    public String saveRecipe(@ModelAttribute RecipeCommand command) {
+//        RecipeCommand savedCommand = recipeService.saveRecipeCommand(command);
+//        return "redirect:" + savedCommand.getId();
+//
+//    }
+
     @PostMapping
     @RequestMapping("recipe")
-    public String saveRecipe(@ModelAttribute RecipeCommand command) {
-        RecipeCommand savedCommand = recipeService.saveRecipeCommand(command);
-        return "redirect:" + savedCommand.getId();
+    public String saveRecipe(@ModelAttribute Recipe recipe) {
+        Recipe savedRecipe = recipeService.saveRecipe(recipe);
 
+        return "redirect:" + savedRecipe.getId();
     }
+
 
     @GetMapping
     @RequestMapping(value = "/recipe/{id}/delete")

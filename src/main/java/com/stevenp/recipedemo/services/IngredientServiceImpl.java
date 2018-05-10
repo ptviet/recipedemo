@@ -1,7 +1,6 @@
 package com.stevenp.recipedemo.services;
 
-import com.stevenp.recipedemo.commands.IngredientCommand;
-import com.stevenp.recipedemo.converters.IngredientToIngredientCommand;
+import com.stevenp.recipedemo.domain.Ingredient;
 import com.stevenp.recipedemo.domain.Recipe;
 import com.stevenp.recipedemo.repositories.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -14,17 +13,15 @@ import java.util.Optional;
 @Service
 public class IngredientServiceImpl implements IngredientService {
 
-    private final IngredientToIngredientCommand ingredientToIngredientCommand;
     private final RecipeRepository recipeRepository;
 
-    public IngredientServiceImpl(IngredientToIngredientCommand ingredientToIngredientCommand, RecipeRepository recipeRepository) {
-        this.ingredientToIngredientCommand = ingredientToIngredientCommand;
+    public IngredientServiceImpl(RecipeRepository recipeRepository) {
         this.recipeRepository = recipeRepository;
     }
 
     @Override
     @Transactional
-    public IngredientCommand findByRecipeIdAndIngredientId(Long recipeId, Long ingredientId) {
+    public Ingredient findByRecipeIdAndIngredientId(Long recipeId, Long ingredientId) {
 
         Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
 
@@ -33,16 +30,15 @@ public class IngredientServiceImpl implements IngredientService {
         } else {
             Recipe recipe = recipeOptional.get();
 
-            Optional<IngredientCommand> ingredientCommandOptional
+            Optional<Ingredient> ingredient
                     = recipe.getIngredients().stream()
-                    .filter(ingredient -> ingredient.getId().equals(ingredientId))
-                    .map(ingredient -> ingredientToIngredientCommand.convert(ingredient))
+                    .filter(ingre -> ingre.getId().equals(ingredientId))
                     .findFirst();
 
-            if(!ingredientCommandOptional.isPresent()){
+            if(!ingredient.isPresent()){
                 log.error("Ingredient Not Found");
             } else {
-                return ingredientCommandOptional.get();
+                return ingredient.get();
             }
         }
         return null;

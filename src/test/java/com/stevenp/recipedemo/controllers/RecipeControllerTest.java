@@ -1,6 +1,5 @@
 package com.stevenp.recipedemo.controllers;
 
-import com.stevenp.recipedemo.commands.RecipeCommand;
 import com.stevenp.recipedemo.domain.Recipe;
 import com.stevenp.recipedemo.services.RecipeService;
 import org.junit.Before;
@@ -63,9 +62,9 @@ public class RecipeControllerTest {
     @Test
     public void testPostNewRecipeForm() throws Exception {
 
-        RecipeCommand command = new RecipeCommand();
-        command.setId(2L);
-        when(recipeService.saveRecipeCommand(any())).thenReturn(command);
+        Recipe recipe = new Recipe();
+        recipe.setId(2L);
+        when(recipeService.saveRecipe(any())).thenReturn(recipe);
 
         mockMvc.perform(
                         post("/recipe")
@@ -79,9 +78,9 @@ public class RecipeControllerTest {
     @Test
     public void testUpdateRecipeForm() throws Exception {
 
-        RecipeCommand command = new RecipeCommand();
-        command.setId(1L);
-        when(recipeService.saveRecipeCommand(any())).thenReturn(command);
+        Recipe recipe = new Recipe();
+        recipe.setId(1L);
+        when(recipeService.saveRecipe(any())).thenReturn(recipe);
 
         mockMvc.perform(get("/recipe/1/edit"))
                 .andExpect(status().isOk())
