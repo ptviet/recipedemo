@@ -1,15 +1,15 @@
 package com.stevenp.recipedemo.controllers;
 
 
+import com.stevenp.recipedemo.domain.Ingredient;
 import com.stevenp.recipedemo.domain.Recipe;
 import com.stevenp.recipedemo.services.IngredientService;
 import com.stevenp.recipedemo.services.RecipeService;
+import com.stevenp.recipedemo.services.UnitOfMeasureService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @Controller
@@ -17,10 +17,12 @@ public class IngredientController {
 
     private final RecipeService recipeService;
     private final IngredientService ingredientService;
+    private final UnitOfMeasureService unitOfMeasureService;
 
-    public IngredientController(RecipeService recipeService, IngredientService ingredientService) {
+    public IngredientController(RecipeService recipeService, IngredientService ingredientService, UnitOfMeasureService unitOfMeasureService) {
         this.recipeService = recipeService;
         this.ingredientService = ingredientService;
+        this.unitOfMeasureService = unitOfMeasureService;
     }
 
     @GetMapping
@@ -48,4 +50,36 @@ public class IngredientController {
 
         return "recipe/ingredient/show";
     }
+
+    @GetMapping
+    @RequestMapping({"recipe/{recipeId}/ingredient/{ingredientId}/edit"})
+    public String updateRecipeIngredient(@PathVariable String recipeId,
+                                         @PathVariable String ingredientId, Model model) {
+        model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(Long.valueOf(recipeId),
+                                                                                        Long.valueOf(ingredientId)));
+        model.addAttribute("uomList", unitOfMeasureService.listAllUoms());
+
+        return "recipe/ingredient/ingredientForm";
+    }
+
+    @PostMapping("recipe/{recipeId}/ingredient")
+    public String saveIngredient(@ModelAttribute Ingredient ingredient) {
+
+        Ingredient savedIngredient = ingredientService.saveIngredient(ingredient);
+
+        log.debug("Saved Recipe ID: " + savedIngredient.getRecipe().getId());
+        log.debug("Saved Ingredient ID: " + savedIngredient.getId());
+        log.debug("Saved Ingredient UoM ID: " + savedIngredient.getUnitOfMeasure().getId());
+
+        return "redirect:/recipe/" + savedIngredient.getRecipe().getId() + "/ingredient";
+    }
+
+    @GetMapping
+    @RequestMapping(value = "/recipe/{recipeId}/ingredient/{ingredientId}/delete")
+    public String deleteIngredient(@PathVariable String recipeId, @PathVariable String ingredientId) {
+
+        ingredientService.deleteById(new Long(ingredientId));
+        return "redirect:/recipe/" + recipeId + "/ingredient";
+    }
+
 }

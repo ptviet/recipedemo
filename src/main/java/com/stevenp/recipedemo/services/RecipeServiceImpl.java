@@ -1,8 +1,5 @@
 package com.stevenp.recipedemo.services;
 
-import com.stevenp.recipedemo.commands.RecipeCommand;
-import com.stevenp.recipedemo.converters.RecipeCommandToRecipe;
-import com.stevenp.recipedemo.converters.RecipeToRecipeCommand;
 import com.stevenp.recipedemo.domain.Recipe;
 import com.stevenp.recipedemo.repositories.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;

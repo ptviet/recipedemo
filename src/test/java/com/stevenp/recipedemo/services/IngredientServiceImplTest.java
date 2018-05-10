@@ -5,7 +5,9 @@ import com.stevenp.recipedemo.converters.IngredientToIngredientCommand;
 import com.stevenp.recipedemo.converters.UnitOfMeasureToUnitOfMeasureCommand;
 import com.stevenp.recipedemo.domain.Ingredient;
 import com.stevenp.recipedemo.domain.Recipe;
+import com.stevenp.recipedemo.repositories.IngredientRepository;
 import com.stevenp.recipedemo.repositories.RecipeRepository;
+import com.stevenp.recipedemo.repositories.UnitOfMeasureRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -22,6 +24,12 @@ public class IngredientServiceImplTest {
     @Mock
     RecipeRepository recipeRepository;
 
+    @Mock
+    UnitOfMeasureRepository unitOfMeasureRepository;
+
+    @Mock
+    IngredientRepository ingredientRepository;
+
     IngredientService ingredientService;
 
     //init converters
@@ -33,7 +41,7 @@ public class IngredientServiceImplTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        ingredientService = new IngredientServiceImpl(recipeRepository);
+        ingredientService = new IngredientServiceImpl(recipeRepository, unitOfMeasureRepository, ingredientRepository);
     }
 
     @Test
@@ -41,7 +49,7 @@ public class IngredientServiceImplTest {
     }
 
     @Test
-    public void findByRecipeIdAndRecipeIdHappyPath() throws Exception {
+    public void findByRecipeIdAndRecipeId() throws Exception {
         //given
         Recipe recipe = new Recipe();
         recipe.setId(1L);
@@ -69,6 +77,42 @@ public class IngredientServiceImplTest {
         assertEquals(Long.valueOf(3L), ingredient.getId());
         assertEquals(Long.valueOf(1L), ingredient.getRecipe().getId());
         verify(recipeRepository, times(1)).findById(anyLong());
+    }
+
+    @Test
+    public void testSaveRecipe() throws Exception {
+        //given
+        Ingredient ingredient = new Ingredient();
+        ingredient.setId(3L);
+        ingredient.setRecipe(new Recipe());
+        ingredient.getRecipe().setId(2L);
+
+        Optional<Recipe> recipeOptional = Optional.of(new Recipe());
+
+        Recipe savedRecipe = new Recipe();
+        savedRecipe.addIngredient(new Ingredient());
+        savedRecipe.getIngredients().iterator().next().setId(3L);
+
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+        when(recipeRepository.save(any())).thenReturn(savedRecipe);
+
+        //when
+        Ingredient savedIngredient = ingredientService.saveIngredient(ingredient);
+
+
+        //then
+        assertEquals(Long.valueOf(3L), savedIngredient.getId());
+        verify(recipeRepository, times(1)).findById(anyLong());
+        verify(recipeRepository, times(1)).save(any(Recipe.class));
+    }
+
+    @Test
+    public void testDeleteById() throws Exception {
+
+        ingredientRepository.deleteById(2L);
+
+        verify(ingredientRepository, times(1)).deleteById(anyLong());
+
     }
 
 }
