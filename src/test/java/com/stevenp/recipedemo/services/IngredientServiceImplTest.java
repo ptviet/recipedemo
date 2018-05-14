@@ -32,7 +32,6 @@ public class IngredientServiceImplTest {
 
     IngredientService ingredientService;
 
-    //init converters
     public IngredientServiceImplTest() {
 
     }
@@ -44,9 +43,6 @@ public class IngredientServiceImplTest {
         ingredientService = new IngredientServiceImpl(recipeRepository, unitOfMeasureRepository, ingredientRepository);
     }
 
-    @Test
-    public void findByRecipeIdAndId() throws Exception {
-    }
 
     @Test
     public void findByRecipeIdAndRecipeId() throws Exception {
@@ -80,7 +76,7 @@ public class IngredientServiceImplTest {
     }
 
     @Test
-    public void testSaveRecipe() throws Exception {
+    public void testSaveIngredient() throws Exception {
         //given
         Ingredient ingredient = new Ingredient();
         ingredient.setId(3L);

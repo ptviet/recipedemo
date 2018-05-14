@@ -54,12 +54,8 @@ public class IngredientServiceImpl implements IngredientService {
     @Transactional
     public Ingredient saveIngredient(Ingredient ingredient) {
 
-        log.debug("saveIngredient() Ingredient: " + ingredient.getDescription());
-
-        log.debug("Recipe: " + ingredient.getRecipe());
-
         Optional<Recipe> recipeOptional = recipeRepository.findById(ingredient.getRecipe().getId());
-        log.debug("recipeOptional: " + recipeOptional.get().getDescription());
+
         if(!recipeOptional.isPresent()) {
             log.error("Recipe Not Found");
             return new Ingredient();
@@ -79,14 +75,28 @@ public class IngredientServiceImpl implements IngredientService {
                                                 .orElseThrow(() -> new RuntimeException("UoM Not Found")));
 
             } else {
+                ingredient.setRecipe(recipe);
                 recipe.addIngredient(ingredient);
+
             }
 
             Recipe savedRecipe = recipeRepository.save(recipe);
 
-            return  savedRecipe.getIngredients().stream()
+            Optional<Ingredient> savedIngredientOptional = savedRecipe.getIngredients().stream()
                     .filter(recipeIngredients -> recipeIngredients.getId().equals(ingredient.getId()))
-                    .findFirst().get();
+                    .findFirst();
+
+            if(!savedIngredientOptional.isPresent()){
+                //Best guess
+                savedIngredientOptional = savedRecipe.getIngredients().stream()
+                        .filter(recipeIngredients -> recipeIngredients.getDescription().equals(ingredient.getDescription()))
+                        .filter(recipeIngredients -> recipeIngredients.getAmount().equals(ingredient.getAmount()))
+                        .filter(recipeIngredients -> recipeIngredients.getUnitOfMeasure().getId().equals(ingredient.getUnitOfMeasure().getId()))
+                        .findFirst();
+            }
+
+            //todo check for fail
+            return savedIngredientOptional.get();
         }
     }
 
